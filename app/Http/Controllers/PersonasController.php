@@ -21,26 +21,29 @@ class PersonasController extends Controller
         $personas = Personas::all();
         $datos = [];
 
+        $nombreRequest = $request->nombre_completo;
         
         foreach ($personas as $persona) 
         {
             
-            if($persona->nombre_completo == $request->nombre_completo)
-            {    
+            $nombrePersonaAPI = $persona->nombre_completo;
+
+            similar_text($nombreRequest, $nombrePersonaAPI, $porcSimilitud); //Función recomendada para la funcionalidad
+
+            if($porcSimilitud >= $persona->porcentaje && $porcSimilitud >= $request->porcentaje)
+            {
                 array_push(
                     $datos,
-                    [
-                        "nombre_completo" => $persona->nombre_completo,
-                        "porcentaje" => $persona->porcentaje
+                    [   
+                        "nombre_buscado" => $request->nombre_completo,
+                        "porcentaje_buscado" => $request->porcentaje,
+                        "nombre_encontrado" => $persona->nombre_completo,
+                        "porcentaje_encontrado" => $persona->porcentaje
                     ]
                 );
-                
             }
-
               
         }
-        
-
 
         return json_encode($datos);
     }
