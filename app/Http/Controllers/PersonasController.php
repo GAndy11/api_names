@@ -35,7 +35,7 @@ class PersonasController extends Controller
                 similar_text($nombreRequest, $nombrePersonaAPI, $porcSimilitud); //Función recomendada para la funcionalidad
     
                 // Validar similitudes que llegan con las que se esperan en BD y en consulta a la API
-                if($porcSimilitud >= $persona->porcentaje && $porcSimilitud >= $request->porcentaje)    
+                if($porcSimilitud >= $request->porcentaje)    
                 {
                     $contadorCoincidencias ++;
                     
@@ -45,7 +45,7 @@ class PersonasController extends Controller
                             "nombre_buscado" => $request->nombre_completo,
                             "porcentaje_buscado" => $request->porcentaje,
                             "nombre_encontrado" => $persona->nombre_completo,
-                            "porcentaje_encontrado" => $persona->porcentaje,
+                            "porcentaje_encontrado" => $porcSimilitud,
                             "departamento" => $persona->departamento,
                             "localidad" => $persona->localidad,
                             "municipio" => $persona->municipio,
