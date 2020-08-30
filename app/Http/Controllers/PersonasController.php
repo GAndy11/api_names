@@ -4,29 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Personas;
 use Illuminate\Http\Request;
+use stdClass;
 
 class PersonasController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        //Consulta de personas
         $personas = Personas::all();
+        $datos = [];
 
-        return $personas;
-    }
+        
+        foreach ($personas as $persona) 
+        {
+            
+            if($persona->nombre_completo == $request->nombre_completo)
+            {    
+                array_push(
+                    $datos,
+                    [
+                        "nombre_completo" => $persona->nombre_completo,
+                        "porcentaje" => $persona->porcentaje
+                    ]
+                );
+                
+            }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+              
+        }
+        
+
+
+        return json_encode($datos);
     }
 
     /**
@@ -37,51 +53,9 @@ class PersonasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Creación de personas
+        $persona = Personas::create($request->all());
+        return $persona;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Personas  $personas
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Personas $personas)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Personas  $personas
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Personas $personas)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Personas  $personas
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Personas $personas)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Personas  $personas
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Personas $personas)
-    {
-        //
-    }
 }
