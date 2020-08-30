@@ -15,9 +15,17 @@ class CreatePersonasTable extends Migration
     {
         Schema::create('personas', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('nombre_completo')->unique();
             $table->double('porcentaje');
+<<<<<<< HEAD
+=======
+            $table->string('departamento');
+            $table->string('localidad');
+            $table->string('municipio');
+            $table->integer('anos_activo');
+            $table->string('tipo_persona');
+            $table->string('tipo_cargo');
+>>>>>>> feature
         });
     }
 
