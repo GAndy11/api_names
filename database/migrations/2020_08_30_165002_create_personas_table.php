@@ -17,7 +17,7 @@ class CreatePersonasTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('nombre_completo')->unique();
-            $table->integer('porcentaje');
+            $table->double('porcentaje');
         });
     }
 
