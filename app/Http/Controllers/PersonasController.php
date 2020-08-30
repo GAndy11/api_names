@@ -20,29 +20,56 @@ class PersonasController extends Controller
         //Consulta de personas
         $personas = Personas::all();
         $datos = [];
+        $mensaje = "";
 
+        $nombreRequest = $request->nombre_completo;
         
-        foreach ($personas as $persona) 
+        if(count($personas) > 0)
         {
-            
-            if($persona->nombre_completo == $request->nombre_completo)
-            {    
-                array_push(
-                    $datos,
-                    [
-                        "nombre_completo" => $persona->nombre_completo,
-                        "porcentaje" => $persona->porcentaje
-                    ]
-                );
+            foreach ($personas as $persona) 
+            {
                 
+                $nombrePersonaAPI = $persona->nombre_completo;
+                $contadorCoincidencias = 0;
+    
+                similar_text($nombreRequest, $nombrePersonaAPI, $porcSimilitud); //Función recomendada para la funcionalidad
+    
+                // Validar similitudes que llegan con las que se esperan en BD y en consulta a la API
+                if($porcSimilitud >= $persona->porcentaje && $porcSimilitud >= $request->porcentaje)    
+                {
+                    $contadorCoincidencias ++;
+                    
+                    array_push(
+                        $datos,
+                        [   
+                            "nombre_buscado" => $request->nombre_completo,
+                            "porcentaje_buscado" => $request->porcentaje,
+                            "nombre_encontrado" => $persona->nombre_completo,
+                            "porcentaje_encontrado" => $persona->porcentaje,
+                            "departamento" => $persona->departamento,
+                            "localidad" => $persona->localidad,
+                            "municipio" => $persona->municipio,
+                            "anos_activo" => $persona->anos_activo,
+                            "tipo_persona" => $persona->tipo_persona,
+                            "tipo_cargo" => $persona->tipo_cargo
+                        ]
+                    );
+                }
+                  
             }
 
-              
+            $mensaje = $contadorCoincidencias > 0 ? "Exito, registros encontrados" : "Exito, registros encontrados";
+        }else
+        {
+            $mensaje = "No hay datos dentro de la BD";
         }
         
+        $data = [
+            "mensaje" => $mensaje,
+            "resultado" => $datos
+        ];
 
-
-        return json_encode($datos);
+        return json_encode($data);
     }
 
     /**
