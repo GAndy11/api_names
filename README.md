@@ -16,5 +16,7 @@ Donde se han aplicado las siguientes tecnologías:
 
 # Una vez clonado el repositorio correr los comandos para instalar las dependencias
 
-*	Composer install
-*	npm install
+*	(Comando) Composer install
+*	(Comando) npm install
+*   Crear el archivo .env con base al .env.example que está en la raíz y colocar la información de la conexion a BD
+*	(Comando) PHP artisan migrate (/comando) Para realizar las migraciones de la BD
