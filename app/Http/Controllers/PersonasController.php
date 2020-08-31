@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Personas;
 use Illuminate\Http\Request;
-use stdClass;
+use Illuminate\Support\Facades\Log;
 
 class PersonasController extends Controller
 {
@@ -54,11 +54,22 @@ class PersonasController extends Controller
                             "tipo_cargo" => $persona->tipo_cargo
                         ]
                     );
+
+                    Log::info('Se realizó una busqueda de nombres. Nombre buscado : ' . $request->nombre_completo . ' Porcentaje buscado : ' . $request->porcentaje . ' Nombre encontrado: ' . $persona->nombre_completo . ' Porcentaje encontrado: ' . $porcSimilitud);
                 }
                   
             }
 
             $mensaje = $contadorCoincidencias > 0 ? "Exito, coincidencias encontradas" : "Exito, coincidencias no encontradas";
+
+            if ($contadorCoincidencias > 0) {
+                $mensaje = "Exito, coincidencias encontradas";
+            }else{
+                $mensaje = "Exito, coincidencias no encontradas";
+                Log::info('Se realizó una busqueda de nombres. Nombre buscado : ' . $request->nombre_completo . ' Porcentaje buscado : ' . $request->porcentaje . ' No se encontraton coincidencias en la BD');
+            }
+
+
         }else
         {
             $mensaje = "No hay datos dentro de la BD";
