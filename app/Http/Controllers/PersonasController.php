@@ -19,6 +19,7 @@ class PersonasController extends Controller
 
         //Consulta de personas
         $personas = Personas::all();
+        $contadorCoincidencias = 0;
         $datos = [];
         $mensaje = "";
 
@@ -30,8 +31,7 @@ class PersonasController extends Controller
             {
                 
                 $nombrePersonaAPI = $persona->nombre_completo;
-                $contadorCoincidencias = 0;
-    
+                    
                 similar_text($nombreRequest, $nombrePersonaAPI, $porcSimilitud); //Función recomendada para la funcionalidad
     
                 // Validar similitudes que llegan con las que se esperan en BD y en consulta a la API
@@ -58,7 +58,7 @@ class PersonasController extends Controller
                   
             }
 
-            $mensaje = $contadorCoincidencias > 0 ? "Exito, registros encontrados" : "Exito, registros encontrados";
+            $mensaje = $contadorCoincidencias > 0 ? "Exito, coincidencias encontradas" : "Exito, coincidencias no encontradas";
         }else
         {
             $mensaje = "No hay datos dentro de la BD";
